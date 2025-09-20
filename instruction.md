@@ -1,6 +1,8 @@
 Instruction to AI Agent:
 You are an expert full-stack web developer. Build a responsive web app prototype for a hackathon project called Mitra App. The app disguises mental wellness tracking as fun games, with a hidden AI voice companion and a judge dashboard. Use React (frontend) and FastAPI/Flask (backend). Deploy backend on Google Cloud Run and integrate Google Cloud AI tools.
 
+
+
 🔹 Core Requirements
 
 1. Tech Stack
