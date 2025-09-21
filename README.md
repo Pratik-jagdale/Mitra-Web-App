@@ -103,6 +103,3 @@ The backend API will be available at http://localhost:8000
 - Frontend code is in src/components/
 - Backend endpoints are in main.py
 
-## License
-
-This project is MIT licensed.
