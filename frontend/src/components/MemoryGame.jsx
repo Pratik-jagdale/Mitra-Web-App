@@ -1,226 +1,134 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
-const MemoryGame = () => {
-  const [cards, setCards] = useState([])
-  const [flipped, setFlipped] = useState([])
-  const [matched, setMatched] = useState([])
-  const [score, setScore] = useState(0)
-  const [moves, setMoves] = useState(0)
-  const [gameStarted, setGameStarted] = useState(false)
+const Button = ({ children, className, ...props }) => (
+  <button {...props} className={`px-6 py-2 rounded-xl shadow-md font-bold ${className}`}>
+    {children}
+  </button>
+);
 
-  const emotionPairs = [
-    { id: 1, emotion: '😌', name: 'Calm', color: '#FFB3BA' },
-    { id: 2, emotion: '😊', name: 'Joy', color: '#FFDFBA' },
-    { id: 3, emotion: '✨', name: 'Hope', color: '#FFFFBA' },
-    { id: 4, emotion: '🕊️', name: 'Peace', color: '#BAFFC9' },
-    { id: 5, emotion: '🌊', name: 'Tranquil', color: '#BAE1FF' },
-    { id: 6, emotion: '🌸', name: 'Serene', color: '#FFB3E6' },
-  ]
+const emotions = [
+  { emotion: "😊", color: "#FFD166" },
+  { emotion: "😢", color: "#118AB2" },
+  { emotion: "😡", color: "#EF476F" },
+  { emotion: "😱", color: "#073B4C" },
+  { emotion: "😍", color: "#06D6A0" },
+  { emotion: "😴", color: "#9D4EDD" },
+];
+
+export default function MemoryGame() {
+  const [cards, setCards] = useState([]);
+  const [flipped, setFlipped] = useState([]);
+  const [matched, setMatched] = useState([]);
+  const [moves, setMoves] = useState(0);
+  const [score, setScore] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
 
   const initializeGame = () => {
-    const duplicatedEmotions = [...emotionPairs, ...emotionPairs]
-    const shuffledCards = duplicatedEmotions
-      .sort(() => Math.random() - 0.5)
-      .map((card, index) => ({ ...card, uniqueId: index }))
-    setCards(shuffledCards)
-    setFlipped([])
-    setMatched([])
-    setScore(0)
-    setMoves(0)
-    setGameStarted(true)
-  }
+    const duplicated = [...emotions, ...emotions];
+    const shuffled = duplicated
+      .map((item) => ({ ...item, uid: Math.random().toString(36).slice(2) }))
+      .sort(() => Math.random() - 0.5);
 
-  const handleCardClick = (uniqueId) => {
-    if (
-      flipped.length === 2 || 
-      flipped.includes(uniqueId) || 
-      matched.includes(uniqueId)
-    ) return
+    setCards(shuffled);
+    setFlipped([]);
+    setMatched([]);
+    setScore(0);
+    setMoves(0);
+    setGameStarted(true);
+  };
 
-    const newFlipped = [...flipped, uniqueId]
-    setFlipped(newFlipped)
+  const handleFlip = (uid) => {
+    if (flipped.includes(uid) || matched.includes(uid) || flipped.length === 2) return;
+    setFlipped((prev) => [...prev, uid]);
+  };
 
-    if (newFlipped.length === 2) {
-      setMoves(prev => prev + 1)
-      const [firstId, secondId] = newFlipped
-      const firstCard = cards.find(card => card.uniqueId === firstId)
-      const secondCard = cards.find(card => card.uniqueId === secondId)
+  useEffect(() => {
+    if (flipped.length === 2) {
+      setMoves((m) => m + 1);
+      const [first, second] = flipped;
+      const firstCard = cards.find((c) => c.uid === first);
+      const secondCard = cards.find((c) => c.uid === second);
 
-      if (firstCard.id === secondCard.id) {
-        setMatched(prev => [...prev, firstId, secondId])
-        setScore(prev => prev + 10)
-        setFlipped([])
-
-        // Send game data to backend
-        fetch('/api/analyze_game', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            score,
-            reactionTime: moves,
-            timestamp: new Date().toISOString(),
-          }),
-        })
-      } else {
-        setTimeout(() => setFlipped([]), 1000)
+      if (firstCard.emotion === secondCard.emotion) {
+        setMatched((prev) => [...prev, first, second]);
+        setScore((s) => s + 10);
       }
-    }
-  }
 
-  const isGameComplete = matched.length === cards.length && cards.length > 0
+      setTimeout(() => setFlipped([]), 1000);
+    }
+  }, [flipped, cards]);
+
+  useEffect(() => {
+    if (matched.length === cards.length && cards.length > 0) {
+      alert("🎉 You matched all emotions!");
+    }
+  }, [matched, cards]);
+
+  const isFlipped = (uid) => flipped.includes(uid) || matched.includes(uid);
 
   return (
-    <motion.div 
-      className="max-w-7xl mx-auto mt-4 sm:mt-8"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <motion.div 
-        className="bg-white/80 dark:bg-slate-900/60 backdrop-blur-sm rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-white/20 dark:border-dark-primary/20"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.div 
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-500 p-6">
+      <h1 className="text-4xl font-extrabold text-white mb-6 tracking-wide">
+        Mood Matcher 🎭
+      </h1>
+
+      <div className="flex gap-6 items-center mb-6">
+        <div className="bg-white rounded-xl shadow-md px-4 py-2">
+          <p className="text-lg font-semibold text-gray-800">Score: {score}</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-md px-4 py-2">
+          <p className="text-lg font-semibold text-gray-800">Moves: {moves}</p>
+        </div>
+        <Button
+          onClick={initializeGame}
+          className="bg-yellow-400 hover:bg-yellow-500 text-black"
         >
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold mb-4 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent">Emotion Memory Journey</h2>
-          <p className="text-light-muted dark:text-dark-muted mb-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto transition-colors duration-300">
-            Strengthen your mind while exploring emotional wellness through gentle memory exercises
-          </p>
-          {gameStarted && (
-            <motion.div 
-              className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-12 mb-8"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, type: "spring" }}
-            >
-              <div className="bg-primary-100/50 dark:bg-primary-900/30 rounded-2xl px-6 py-3 transition-colors duration-300">
-                <p className="text-lg sm:text-xl font-semibold text-calm-800 dark:text-dark-50 transition-colors duration-300">Score: {score}</p>
-              </div>
-              <div className="bg-accent-100/50 dark:bg-accent-900/30 rounded-2xl px-6 py-3 transition-colors duration-300">
-                <p className="text-lg sm:text-xl font-semibold text-calm-800 dark:text-dark-50 transition-colors duration-300">Moves: {moves}</p>
-              </div>
-            </motion.div>
-          )}
-        </motion.div>
+          {gameStarted ? "Restart Game" : "Start Game"}
+        </Button>
+      </div>
 
-        {!gameStarted ? (
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <motion.button
-              onClick={initializeGame}
-              className="btn-primary text-lg px-10 py-4 font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Begin Memory Journey
-            </motion.button>
-          </motion.div>
-        ) : (
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 max-w-md">
+        {cards.map((card) => (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            key={card.uid}
+            onClick={() => handleFlip(card.uid)}
+            className="w-20 h-24 sm:w-24 sm:h-28 perspective cursor-pointer"
           >
-            <motion.div 
-              className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6 mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+            <motion.div
+              className={`relative w-full h-full rounded-xl shadow-lg transition-transform duration-500`}
+              style={{
+                transformStyle: "preserve-3d",
+                transform: isFlipped(card.uid) ? "rotateY(180deg)" : "rotateY(0deg)",
+              }}
             >
-              {cards.map(({ uniqueId, emotion, name, color }, index) => (
-                <motion.div
-                  key={uniqueId}
-                  onClick={() => handleCardClick(uniqueId)}
-                  className={`
-                    aspect-square flex items-center justify-center rounded-2xl 
-                    cursor-pointer transition-all duration-300 transform 
-                    hover:scale-105 active:scale-95 text-2xl sm:text-3xl shadow-lg
-                    ${flipped.includes(uniqueId) || matched.includes(uniqueId)
-                      ? 'bg-white/90 dark:bg-dark-600/90 backdrop-blur-sm border-2 border-primary-300 dark:border-primary-500'
-                      : 'bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 text-white hover:shadow-xl'
-                    }
-                  `}
-                  initial={{ opacity: 0, scale: 0.8, rotateY: 180 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  transition={{ delay: 0.6 + index * 0.05 }}
-                  whileHover={{ y: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {flipped.includes(uniqueId) || matched.includes(uniqueId) ? (
-                    <motion.div 
-                      className="text-center"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring" }}
-                    >
-                      <div className="text-3xl sm:text-4xl lg:text-5xl mb-2">{emotion}</div>
-                      <div className="text-xs sm:text-sm font-medium text-calm-700 dark:text-dark-300 transition-colors duration-300">{name}</div>
-                    </motion.div>
-                  ) : (
-                    <motion.div 
-                      className="text-2xl sm:text-3xl font-bold"
-                      animate={{ rotate: [0, 5, -5, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      ?
-                    </motion.div>
-                  )}
-                </motion.div>
-              ))}
+              {/* Front */}
+              <div
+                className="absolute w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-3xl"
+                style={{ backfaceVisibility: "hidden" }}
+              >
+                ❓
+              </div>
+
+              {/* Back */}
+              <div
+                className="absolute w-full h-full rounded-xl flex items-center justify-center text-4xl font-bold"
+                style={{
+                  backgroundColor: card.color,
+                  backfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
+                }}
+              >
+                {card.emotion}
+              </div>
             </motion.div>
-
-            <AnimatePresence>
-              {isGameComplete && (
-                <motion.div 
-                  className="text-center bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-3xl p-8 border border-green-200 dark:border-green-700 shadow-xl transition-colors duration-300"
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, y: -20 }}
-                  transition={{ duration: 0.5, type: "spring" }}
-                >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: "spring" }}
-                    className="text-6xl mb-4"
-                  >
-                    🎉
-                  </motion.div>
-                  <h3 className="text-2xl sm:text-3xl font-serif font-bold text-green-700 dark:text-green-400 mb-4 transition-colors duration-300">
-                    Wonderful Achievement!
-                  </h3>
-                  <p className="mb-6 text-base sm:text-lg text-green-600 dark:text-green-300 transition-colors duration-300">
-                    You completed your memory journey in {moves} moves with a score of {score}!
-                  </p>
-                  <motion.button
-                    onClick={initializeGame}
-                    className="btn-primary text-base px-8 py-3 font-semibold"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Journey Again
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
-        )}
-      </motion.div>
-    </motion.div>
-  )
-}
+        ))}
+      </div>
 
-export default MemoryGame
+      <p className="text-white mt-6 text-center text-sm">
+        Match all the moods before your moves run out!
+      </p>
+    </div>
+  );
+}

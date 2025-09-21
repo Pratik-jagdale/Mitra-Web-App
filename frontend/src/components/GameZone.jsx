@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import MemoryGame from './MemoryGame'
+import { gameStats, userEngagement, achievements } from '../data/homeData'
 
 const GameZone = () => {
   const [score, setScore] = useState(0)
@@ -74,7 +75,7 @@ const GameZone = () => {
         Choose Your Journey
       </motion.h2>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
         <motion.button
           onClick={() => setSelectedGame('mood')}
           className="group relative overflow-hidden"
@@ -207,6 +208,72 @@ const GameZone = () => {
           </div>
         </motion.button>
       </div>
+
+      {/* Engagement Stats Section */}
+      <motion.div
+        className="mt-16 px-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+      >
+        <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent">
+          Your Wellness Journey
+        </h3>
+        
+        {/* Weekly Highlights */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 max-w-6xl mx-auto">
+          {userEngagement.weeklyHighlights.map((highlight, index) => (
+            <motion.div
+              key={highlight.title}
+              className="card-premium dark:card-premium-dark p-6 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + index * 0.1 }}
+            >
+              <span className="text-3xl mb-3 block">{highlight.icon}</span>
+              <h4 className="text-sm text-light-muted dark:text-dark-muted mb-2">{highlight.title}</h4>
+              <p className="text-xl font-bold text-light-text dark:text-dark-text">{highlight.value}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Achievements Section */}
+        <div className="max-w-6xl mx-auto">
+          <h4 className="text-2xl font-bold mb-6 text-light-text dark:text-dark-text">
+            Recent Achievements
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {achievements.map((achievement, index) => (
+              <motion.div
+                key={achievement.id}
+                className="card-premium dark:card-premium-dark p-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 + index * 0.1 }}
+              >
+                <div className="flex items-center mb-4">
+                  <span className="text-3xl mr-3">{achievement.icon}</span>
+                  <div>
+                    <h5 className="font-bold text-light-text dark:text-dark-text">{achievement.name}</h5>
+                    <p className="text-sm text-light-muted dark:text-dark-muted">{achievement.description}</p>
+                  </div>
+                </div>
+                <div className="relative w-full h-2 bg-light-primary/10 dark:bg-dark-primary/10 rounded-full overflow-hidden">
+                  <motion.div
+                    className="absolute left-0 top-0 h-full bg-light-primary dark:bg-dark-primary rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${achievement.progress}%` }}
+                    transition={{ duration: 1, delay: 1 + index * 0.1 }}
+                  />
+                </div>
+                <p className="text-right mt-2 text-sm text-light-muted dark:text-dark-muted">
+                  {achievement.progress}%
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 
@@ -420,7 +487,7 @@ const GameZone = () => {
         <AnimatePresence mode="wait">
           {!selectedGame && renderGameSelection()}
           {selectedGame === 'mood' && renderMoodGame()}
-          {selectedGame === 'memory' && <MemoryGame />}
+          {selectedGame === 'memory' && <MemoryGame onExit={() => setSelectedGame(null)} />}
         </AnimatePresence>
       </motion.div>
     </motion.div>

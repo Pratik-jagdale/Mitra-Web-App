@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { aiCompanionHistory } from '../data/homeData'
 
 const AICompanion = () => {
   const [messages, setMessages] = useState([])

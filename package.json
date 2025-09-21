@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.23.16",
     "react-mouse-particles": "^1.1.5",
     "recharts": "^3.2.1"
