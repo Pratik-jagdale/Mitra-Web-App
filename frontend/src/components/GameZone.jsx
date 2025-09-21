@@ -63,60 +63,147 @@ const GameZone = () => {
       className="text-center"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       <motion.h2 
-        className="text-3xl sm:text-4xl font-serif font-semibold mb-8 text-calm-800 dark:text-dark-50 transition-colors duration-300"
+        className="text-4xl lg:text-5xl font-bold mb-12 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
       >
         Choose Your Journey
       </motion.h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         <motion.button
           onClick={() => setSelectedGame('mood')}
-          className="group bg-white/60 dark:bg-dark-600/60 backdrop-blur-md rounded-3xl shadow-xl p-8 border border-white/30 dark:border-dark-500/30 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500"
-          whileHover={{ scale: 1.02 }}
+          className="group relative overflow-hidden"
+          whileHover={{ scale: 1.02, y: -8 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <div className="flex flex-col items-center text-center">
+          <div className="game-card-premium dark:game-card-premium-dark p-12 text-center h-full">
             <motion.div 
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg"
-              whileHover={{ rotate: 5 }}
+              className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent flex items-center justify-center shadow-2xl group-hover:shadow-glow dark:group-hover:shadow-glow-dark transition-all duration-500"
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ duration: 0.3 }}
             >
-              <span className="text-3xl sm:text-4xl">💚</span>
+              <span className="text-4xl">💚</span>
             </motion.div>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold mb-3 text-calm-800 dark:text-dark-50 transition-colors duration-300">Mood Matcher</h3>
-            <p className="text-sm sm:text-base text-calm-600 dark:text-dark-300 leading-relaxed transition-colors duration-300">
-              Connect with your emotions through gentle color matching
+            
+            <h3 className="text-3xl font-bold mb-4 text-light-text dark:text-dark-text">
+              Mood Matcher
+            </h3>
+            
+            <p className="text-lg text-light-muted dark:text-dark-muted leading-relaxed mb-8">
+              Connect with your emotions through gentle color matching and peaceful interactions
             </p>
+            
+            <div className="flex items-center justify-center space-x-2 text-light-primary dark:text-dark-primary">
+              <span className="font-semibold">Start Journey</span>
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                →
+              </motion.span>
+            </div>
+            
+            {/* Floating particles effect */}
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <motion.div 
+                className="absolute top-4 right-4 w-2 h-2 rounded-full bg-light-primary/30 dark:bg-dark-primary/30"
+                animate={{ 
+                  y: [0, -20, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity, delay: 0 }}
+              />
+              <motion.div 
+                className="absolute bottom-8 left-6 w-1 h-1 rounded-full bg-light-accent/40 dark:bg-dark-accent/40"
+                animate={{ 
+                  y: [0, -15, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
+              />
+              <motion.div 
+                className="absolute top-1/2 right-8 w-1.5 h-1.5 rounded-full bg-light-secondary/30 dark:bg-dark-secondary/30"
+                animate={{ 
+                  y: [0, -25, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+              />
+            </div>
           </div>
         </motion.button>
         
         <motion.button
           onClick={() => setSelectedGame('memory')}
-          className="group bg-white/60 dark:bg-dark-600/60 backdrop-blur-md rounded-3xl shadow-xl p-8 border border-white/30 dark:border-dark-500/30 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500"
-          whileHover={{ scale: 1.02 }}
+          className="group relative overflow-hidden"
+          whileHover={{ scale: 1.02, y: -8 }}
           whileTap={{ scale: 0.98 }}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
-          <div className="flex flex-col items-center text-center">
+          <div className="game-card-premium dark:game-card-premium-dark p-12 text-center h-full">
             <motion.div 
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 dark:from-accent-500 dark:to-accent-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg"
-              whileHover={{ rotate: -5 }}
+              className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-light-accent to-light-primary dark:from-dark-accent dark:to-dark-primary flex items-center justify-center shadow-2xl group-hover:shadow-glow dark:group-hover:shadow-glow-dark transition-all duration-500"
+              whileHover={{ rotate: -5, scale: 1.1 }}
+              transition={{ duration: 0.3 }}
             >
-              <span className="text-3xl sm:text-4xl">🧠</span>
+              <span className="text-4xl">🧠</span>
             </motion.div>
-            <h3 className="text-xl sm:text-2xl font-serif font-bold mb-3 text-calm-800 dark:text-dark-50 transition-colors duration-300">Emotion Memory</h3>
-            <p className="text-sm sm:text-base text-calm-600 dark:text-dark-300 leading-relaxed transition-colors duration-300">
-              Strengthen your mind while exploring emotional wellness
+            
+            <h3 className="text-3xl font-bold mb-4 text-light-text dark:text-dark-text">
+              Emotion Memory
+            </h3>
+            
+            <p className="text-lg text-light-muted dark:text-dark-muted leading-relaxed mb-8">
+              Strengthen your mind while exploring emotional wellness through gentle memory exercises
             </p>
+            
+            <div className="flex items-center justify-center space-x-2 text-light-primary dark:text-dark-primary">
+              <span className="font-semibold">Begin Training</span>
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+              >
+                →
+              </motion.span>
+            </div>
+            
+            {/* Floating particles effect */}
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <motion.div 
+                className="absolute top-6 left-4 w-2 h-2 rounded-full bg-light-accent/30 dark:bg-dark-accent/30"
+                animate={{ 
+                  y: [0, -18, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 2.8, repeat: Infinity, delay: 0.5 }}
+              />
+              <motion.div 
+                className="absolute bottom-6 right-4 w-1 h-1 rounded-full bg-light-primary/40 dark:bg-dark-primary/40"
+                animate={{ 
+                  y: [0, -22, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3.2, repeat: Infinity, delay: 1.5 }}
+              />
+              <motion.div 
+                className="absolute top-1/3 left-8 w-1.5 h-1.5 rounded-full bg-light-secondary/30 dark:bg-dark-secondary/30"
+                animate={{ 
+                  y: [0, -20, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3.5, repeat: Infinity, delay: 2.5 }}
+              />
+            </div>
           </div>
         </motion.button>
       </div>
@@ -128,52 +215,55 @@ const GameZone = () => {
       className="game-container"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
       {!gameStarted ? (
         <motion.div 
           className="text-center px-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
           <motion.h2 
-            className="text-3xl sm:text-4xl font-serif font-semibold mb-6 text-calm-800 dark:text-dark-50 transition-colors duration-300"
+            className="text-4xl lg:text-5xl font-bold mb-8 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             Welcome to Mood Matcher
           </motion.h2>
+          
           <motion.p 
-            className="mb-8 text-calm-600 dark:text-dark-300 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto transition-colors duration-300"
+            className="mb-12 text-light-muted dark:text-dark-muted text-lg lg:text-xl leading-relaxed max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            Connect with your emotions through gentle color matching. This peaceful activity helps you understand your emotional awareness and response patterns.
+            Connect with your emotions through gentle color matching. This peaceful activity helps you understand your emotional awareness and response patterns in a calming environment.
           </motion.p>
+          
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-6 justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
             <motion.button
               onClick={startGame}
-              className="btn-primary text-base sm:text-lg px-8 py-4 font-semibold"
+              className="btn-primary-premium text-lg px-10 py-4 font-semibold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Begin Journey
+              Begin Journey ✨
             </motion.button>
+            
             <motion.button
               onClick={() => setSelectedGame(null)}
-              className="btn-ghost text-base sm:text-lg px-8 py-4 font-semibold"
+              className="btn-secondary-premium text-lg px-10 py-4 font-semibold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Back to Games
+              ← Back to Games
             </motion.button>
           </motion.div>
         </motion.div>
@@ -184,25 +274,30 @@ const GameZone = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-6">
             <motion.button
               onClick={() => {
                 setGameStarted(false)
                 setSelectedGame(null)
               }}
-              className="btn-ghost text-sm sm:text-base px-6 py-3 order-2 sm:order-1"
+              className="btn-secondary-premium text-base px-6 py-3 order-2 sm:order-1"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               ← Exit
             </motion.button>
+            
             <motion.div 
               className="order-1 sm:order-2"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: "spring" }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
             >
-              <p className="text-xl sm:text-2xl font-serif font-semibold text-calm-800">Score: {score}</p>
+              <div className="card-premium dark:card-premium-dark px-8 py-4">
+                <p className="text-2xl font-bold text-light-text dark:text-dark-text">
+                  Score: <span className="text-light-primary dark:text-dark-primary">{score}</span>
+                </p>
+              </div>
             </motion.div>
           </div>
           
@@ -210,28 +305,34 @@ const GameZone = () => {
           <AnimatePresence mode="wait">
             {currentEmotion && (
               <motion.div 
-                className="mb-10"
+                className="mb-12"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5, type: "spring" }}
+                transition={{ duration: 0.6, type: "spring" }}
               >
                 <motion.div 
-                  className="w-32 h-32 sm:w-40 sm:h-40 mx-auto rounded-full mb-6 shadow-2xl flex items-center justify-center"
+                  className="w-40 h-40 lg:w-48 lg:h-48 mx-auto rounded-full mb-8 shadow-2xl flex items-center justify-center relative overflow-hidden"
                   style={{ backgroundColor: currentEmotion.color }}
                   whileHover={{ scale: 1.05 }}
                   animate={{ 
                     boxShadow: [
-                      "0 10px 30px rgba(0,0,0,0.1)",
-                      "0 20px 40px rgba(0,0,0,0.15)",
-                      "0 10px 30px rgba(0,0,0,0.1)"
+                      "0 20px 40px rgba(0,0,0,0.1)",
+                      "0 30px 60px rgba(0,0,0,0.15)",
+                      "0 20px 40px rgba(0,0,0,0.1)"
                     ]
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <span className="text-4xl sm:text-5xl">{currentEmotion.emoji}</span>
+                  <span className="text-6xl lg:text-7xl">{currentEmotion.emoji}</span>
+                  
+                  {/* Glowing ring */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent animate-gentle-pulse" />
                 </motion.div>
-                <p className="text-lg sm:text-xl text-calm-600 font-medium">Match this feeling with the correct emotion</p>
+                
+                <p className="text-xl lg:text-2xl text-light-text dark:text-dark-text font-medium">
+                  Match this feeling with the correct emotion
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -240,11 +341,11 @@ const GameZone = () => {
           <AnimatePresence>
             {showFeedback && (
               <motion.div 
-                className="mb-8 text-xl sm:text-2xl font-semibold"
+                className="mb-8 text-2xl lg:text-3xl font-bold"
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: -20 }}
-                transition={{ duration: 0.4, type: "spring" }}
+                transition={{ duration: 0.5, type: "spring" }}
                 style={{ 
                   color: feedbackMessage.includes('Great') ? '#4ECDC4' : '#FFB3BA' 
                 }}
@@ -256,7 +357,7 @@ const GameZone = () => {
 
           {/* Emotion Buttons */}
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -265,7 +366,7 @@ const GameZone = () => {
               <motion.button
                 key={emotion.name}
                 onClick={() => handleEmotionSelect(emotion)}
-                className="p-6 sm:p-8 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95 shadow-lg"
+                className="relative p-8 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 shadow-lg overflow-hidden"
                 style={{ 
                   backgroundColor: emotion.color,
                   color: 'white',
@@ -274,14 +375,17 @@ const GameZone = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 + index * 0.1 }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <div className="text-center">
-                  <div className="text-3xl sm:text-4xl mb-3">{emotion.emoji}</div>
-                  <span className="block text-lg sm:text-xl font-semibold mb-2">{emotion.name}</span>
-                  <span className="text-sm sm:text-base opacity-90 leading-tight">{emotion.description}</span>
+                <div className="text-center relative z-10">
+                  <div className="text-4xl lg:text-5xl mb-4">{emotion.emoji}</div>
+                  <span className="block text-xl lg:text-2xl font-bold mb-3">{emotion.name}</span>
+                  <span className="text-base lg:text-lg opacity-90 leading-tight">{emotion.description}</span>
                 </div>
+                
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
             ))}
           </motion.div>
@@ -292,25 +396,26 @@ const GameZone = () => {
 
   return (
     <motion.div 
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      className="max-w-7xl mx-auto px-6 lg:px-8 py-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       <motion.h1 
-        className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-center mb-8 sm:mb-12 text-calm-800 dark:text-dark-50 transition-colors duration-300"
+        className="text-4xl lg:text-6xl font-bold text-center mb-12 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.6 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
       >
         Find Your Inner Peace
       </motion.h1>
       
       <motion.div 
-        className="card bg-white/80 dark:bg-dark-700/80 backdrop-blur-sm rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-white/20 dark:border-dark-600/20"
+        className="card-premium dark:card-premium-dark p-8 lg:p-12"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        whileHover={{ scale: 1.01, y: -5 }}
       >
         <AnimatePresence mode="wait">
           {!selectedGame && renderGameSelection()}
