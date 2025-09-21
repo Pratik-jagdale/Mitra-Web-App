@@ -29,19 +29,11 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.5.6",
-<<<<<<< HEAD
     "tailwindcss": "^3.4.17",
     "vite": "^4.4.5"
-=======
-    "vite": "^7.1.6"
->>>>>>> 00a9196b19e0a125f830d983ce24fd28033ee7a0
   },
   "plugins": {
     "tailwindcss": {},
     "autoprefixer": {}
   }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> main
