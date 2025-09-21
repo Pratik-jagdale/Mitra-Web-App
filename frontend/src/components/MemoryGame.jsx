@@ -80,7 +80,7 @@ const MemoryGame = () => {
       transition={{ duration: 0.6 }}
     >
       <motion.div 
-        className="bg-white/80 dark:bg-dark-700/80 backdrop-blur-sm rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-white/20 dark:border-dark-600/20"
+        className="bg-white/80 dark:bg-slate-900/60 backdrop-blur-sm rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-white/20 dark:border-dark-primary/20"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
@@ -91,8 +91,8 @@ const MemoryGame = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold mb-4 text-calm-800 dark:text-dark-50 transition-colors duration-300">Emotion Memory Journey</h2>
-          <p className="text-calm-600 dark:text-dark-300 mb-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto transition-colors duration-300">
+          <h2 className="text-2xl sm:text-3xl font-serif font-bold mb-4 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent">Emotion Memory Journey</h2>
+          <p className="text-light-muted dark:text-dark-muted mb-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto transition-colors duration-300">
             Strengthen your mind while exploring emotional wellness through gentle memory exercises
           </p>
           {gameStarted && (
