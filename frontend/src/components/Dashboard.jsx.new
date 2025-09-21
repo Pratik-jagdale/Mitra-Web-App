@@ -5,14 +5,16 @@ import Chart from 'chart.js/auto'
 import { userDashboardData } from '../data/userDashboardData'
 
 const Dashboard = () => {
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState('daily')
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   
+  // Prepare chart data
   const moodTrendsData = {
     labels: days,
     datasets: [
       {
         label: 'Mood Score',
-        data: [75, 82, 78, 85, 80, 88, 92],
+        data: userDashboardData.weeklyProgress.moodScores,
         borderColor: '#5AC8FA',
         backgroundColor: 'rgba(90, 200, 250, 0.1)',
         tension: 0.4,
@@ -20,7 +22,7 @@ const Dashboard = () => {
       },
       {
         label: 'Emotional Balance',
-        data: [70, 75, 72, 80, 85, 87, 90],
+        data: userDashboardData.weeklyProgress.emotionalBalance,
         borderColor: '#FFB703',
         backgroundColor: 'rgba(255, 183, 3, 0.1)',
         tension: 0.4,
@@ -30,16 +32,10 @@ const Dashboard = () => {
   }
 
   const emotionDistributionData = {
-    labels: ['Happy', 'Calm', 'Excited', 'Focused', 'Content'],
+    labels: userDashboardData.emotionalJourney.dominantEmotions.map(item => item.emotion),
     datasets: [{
-      data: [35, 25, 15, 15, 10],
-      backgroundColor: [
-        '#4CAF50',
-        '#2196F3',
-        '#FFB703',
-        '#9C27B0',
-        '#FF9800'
-      ],
+      data: userDashboardData.emotionalJourney.dominantEmotions.map(item => item.percentage),
+      backgroundColor: userDashboardData.emotionalJourney.dominantEmotions.map(item => item.color),
       borderColor: 'rgba(255, 255, 255, 0.5)',
       borderWidth: 2,
     }]
@@ -52,19 +48,54 @@ const Dashboard = () => {
       legend: {
         display: true,
         position: 'bottom',
-      }
+        labels: {
+          color: '#64748B',
+          font: {
+            size: 12,
+            weight: '500',
+          },
+          padding: 20,
+        },
+      },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        titleColor: '#1E293B',
+        bodyColor: '#64748B',
+        borderColor: '#E2E8F0',
+        borderWidth: 1,
+        cornerRadius: 12,
+        padding: 12,
+      },
     },
     scales: {
       x: {
         grid: {
           display: false,
-        }
+        },
+        ticks: {
+          color: '#64748B',
+          font: {
+            size: 12,
+            weight: '500',
+          },
+        },
       },
       y: {
         beginAtZero: true,
         max: 100,
-      }
-    }
+        grid: {
+          color: 'rgba(100, 116, 139, 0.1)',
+          drawBorder: false,
+        },
+        ticks: {
+          color: '#64748B',
+          font: {
+            size: 12,
+            weight: '500',
+          },
+        },
+      },
+    },
   }
 
   return (
@@ -74,6 +105,7 @@ const Dashboard = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
+      {/* Header */}
       <motion.div 
         className="text-center mb-12"
         initial={{ opacity: 0, y: 20 }}
@@ -84,11 +116,13 @@ const Dashboard = () => {
           Your Wellness Journey
         </h1>
         <p className="text-lg text-light-muted dark:text-dark-muted">
-          7 day streak • 14h total playtime
+          {userDashboardData.personalMetrics.currentStreak} day streak • {userDashboardData.personalMetrics.totalPlayTime} total playtime
         </p>
       </motion.div>
 
+      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Progress Chart */}
         <motion.div 
           className="card-premium dark:card-premium-dark p-8"
           initial={{ opacity: 0, y: 20 }}
@@ -109,11 +143,28 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <div className="h-80">
+          <div className="h-80 mb-6">
             <Line data={moodTrendsData} options={chartOptions} />
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            {Object.entries(userDashboardData.personalMetrics).map(([key, value], index) => (
+              <div 
+                key={key}
+                className="text-center p-4 rounded-2xl bg-gradient-to-br from-light-primary/10 to-light-accent/10 dark:from-dark-primary/10 dark:to-dark-accent/10"
+              >
+                <div className="text-2xl font-bold text-light-primary dark:text-dark-primary">
+                  {value}
+                </div>
+                <div className="text-sm text-light-muted dark:text-dark-muted">
+                  {key.replace(/([A-Z])/g, ' $1').trim()}
+                </div>
+              </div>
+            ))}
           </div>
         </motion.div>
 
+        {/* Recent Activities */}
         <motion.div 
           className="card-premium dark:card-premium-dark p-8"
           initial={{ opacity: 0, y: 20 }}
@@ -135,11 +186,7 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-4">
-            {[
-              { activity: 'Memory Game', score: 92, duration: '15 min', mood: 'Happy', date: '2024-02-15' },
-              { activity: 'Meditation', score: 85, duration: '10 min', mood: 'Calm', date: '2024-02-14' },
-              { activity: 'Focus Exercise', score: 88, duration: '20 min', mood: 'Focused', date: '2024-02-13' }
-            ].map((activity, index) => (
+            {userDashboardData.recentActivities.map((activity, index) => (
               <motion.div 
                 key={index}
                 className="p-4 rounded-xl bg-gradient-to-r from-light-primary/5 to-light-accent/5 dark:from-dark-primary/5 dark:to-dark-accent/5 border border-light-primary/10 dark:border-dark-primary/10"
@@ -164,6 +211,7 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
+        {/* Emotional Journey */}
         <motion.div 
           className="card-premium dark:card-premium-dark p-8"
           initial={{ opacity: 0, y: 20 }}
@@ -176,7 +224,7 @@ const Dashboard = () => {
                 Emotional Journey
               </h2>
               <p className="text-light-muted dark:text-dark-muted">
-                Your emotional state distribution
+                Your dominant emotions
               </p>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent flex items-center justify-center shadow-lg">
@@ -184,11 +232,12 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="h-64">
+          <div className="h-64 mb-6">
             <Doughnut data={emotionDistributionData} options={chartOptions} />
           </div>
         </motion.div>
 
+        {/* Achievement Progress */}
         <motion.div 
           className="card-premium dark:card-premium-dark p-8"
           initial={{ opacity: 0, y: 20 }}
@@ -210,11 +259,7 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-6">
-            {[
-              { name: 'Mindfulness Master', current: 7, target: 10, description: 'Complete 10 meditation sessions' },
-              { name: 'Memory Champion', current: 15, target: 20, description: 'Score over 90% in Memory Game' },
-              { name: 'Consistency King', current: 5, target: 7, description: 'Maintain a 7-day streak' }
-            ].map((achievement, index) => (
+            {userDashboardData.achievements.progress.map((achievement, index) => (
               <motion.div 
                 key={achievement.name}
                 className="space-y-2"
