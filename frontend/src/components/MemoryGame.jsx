@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const Button = ({ children, className, ...props }) => (
-  <button {...props} className={`px-6 py-2 rounded-xl shadow-md font-bold ${className}`}>
+  <button {...props} className={`px-4 py-2 rounded-xl shadow-md font-bold text-base ${className}`}>
     {children}
   </button>
 );
@@ -68,67 +68,71 @@ export default function MemoryGame() {
   const isFlipped = (uid) => flipped.includes(uid) || matched.includes(uid);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-500 p-6">
-      <h1 className="text-4xl font-extrabold text-white mb-6 tracking-wide">
-        Mood Matcher 🎭
-      </h1>
+    <div className="min-h-screen w-full flex flex-col items-center justify-between bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-500 px-4 py-4 sm:px-8 sm:py-8">
+      <div className="w-full max-w-4xl flex flex-col items-center">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-white mb-4 tracking-wide text-center">
+          Mood Matcher 🎭
+        </h1>
 
-      <div className="flex gap-6 items-center mb-6">
-        <div className="bg-white rounded-xl shadow-md px-4 py-2">
-          <p className="text-lg font-semibold text-gray-800">Score: {score}</p>
-        </div>
-        <div className="bg-white rounded-xl shadow-md px-4 py-2">
-          <p className="text-lg font-semibold text-gray-800">Moves: {moves}</p>
-        </div>
-        <Button
-          onClick={initializeGame}
-          className="bg-yellow-400 hover:bg-yellow-500 text-black"
-        >
-          {gameStarted ? "Restart Game" : "Start Game"}
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 max-w-md">
-        {cards.map((card) => (
-          <motion.div
-            key={card.uid}
-            onClick={() => handleFlip(card.uid)}
-            className="w-20 h-24 sm:w-24 sm:h-28 perspective cursor-pointer"
+        <div className="flex flex-wrap gap-4 items-center justify-center mb-6 w-full">
+          <div className="bg-white rounded-xl shadow-md px-4 py-2 min-w-[100px] text-center">
+            <p className="text-lg font-semibold text-gray-800">Score: {score}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-md px-4 py-2 min-w-[100px] text-center">
+            <p className="text-lg font-semibold text-gray-800">Moves: {moves}</p>
+          </div>
+          <Button
+            onClick={initializeGame}
+            className="bg-yellow-400 hover:bg-yellow-500 text-black min-w-[120px]"
           >
-            <motion.div
-              className={`relative w-full h-full rounded-xl shadow-lg transition-transform duration-500`}
-              style={{
-                transformStyle: "preserve-3d",
-                transform: isFlipped(card.uid) ? "rotateY(180deg)" : "rotateY(0deg)",
-              }}
-            >
-              {/* Front */}
-              <div
-                className="absolute w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-3xl"
-                style={{ backfaceVisibility: "hidden" }}
-              >
-                ❓
-              </div>
+            {gameStarted ? "Restart Game" : "Start Game"}
+          </Button>
+        </div>
 
-              {/* Back */}
-              <div
-                className="absolute w-full h-full rounded-xl flex items-center justify-center text-4xl font-bold"
-                style={{
-                  backgroundColor: card.color,
-                  backfaceVisibility: "hidden",
-                  transform: "rotateY(180deg)",
-                }}
+        <div className="flex-1 w-full flex justify-center items-center">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 w-full max-w-sm sm:max-w-lg md:max-w-3xl mx-auto">
+            {cards.map((card) => (
+              <motion.div
+                key={card.uid}
+                onClick={() => handleFlip(card.uid)}
+                className="w-full aspect-[3/4] sm:w-auto sm:aspect-[4/5] perspective cursor-pointer select-none rounded-xl"
               >
-                {card.emotion}
-              </div>
-            </motion.div>
-          </motion.div>
-        ))}
+                <motion.div
+                  className={`relative w-full h-full rounded-xl shadow-lg transition-transform duration-500`}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    transform: isFlipped(card.uid) ? "rotateY(180deg)" : "rotateY(0deg)",
+                  }}
+                >
+                  {/* Front */}
+                  <div
+                    className="absolute w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-3xl sm:text-4xl"
+                    style={{ backfaceVisibility: "hidden" }}
+                  >
+                    ❓
+                  </div>
+
+                  {/* Back */}
+                  <div
+                    className="absolute w-full h-full rounded-xl flex items-center justify-center text-4xl sm:text-5xl font-bold"
+                    style={{
+                      backgroundColor: card.color,
+                      backfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                    }}
+                  >
+                    {card.emotion}
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-white mt-6 text-center text-base sm:text-lg">
+          Match all the moods before your moves run out!
+        </p>
       </div>
-
-      <p className="text-white mt-6 text-center text-sm">
-        Match all the moods before your moves run out!
-      </p>
     </div>
   );
 }
