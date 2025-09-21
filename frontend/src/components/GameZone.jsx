@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import MemoryGame from './MemoryGame'
 
 const GameZone = () => {
@@ -11,11 +12,11 @@ const GameZone = () => {
   const [selectedGame, setSelectedGame] = useState(null) // 'mood' or 'memory'
 
   const emotions = [
-    { color: '#FF6B6B', name: 'Anger', description: 'Hot, intense feelings of frustration' },
-    { color: '#4ECDC4', name: 'Calm', description: 'Peaceful, tranquil state of mind' },
-    { color: '#FFD93D', name: 'Joy', description: 'Bright, positive feelings of happiness' },
-    { color: '#6C5CE7', name: 'Sadness', description: 'Deep, heavy feelings of sorrow' },
-    { color: '#A8E6CF', name: 'Hope', description: 'Light, uplifting feelings of optimism' }
+    { color: '#FFB3BA', name: 'Calm', description: 'Peaceful, tranquil state of mind', emoji: '😌' },
+    { color: '#FFDFBA', name: 'Joy', description: 'Bright, positive feelings of happiness', emoji: '😊' },
+    { color: '#FFFFBA', name: 'Hope', description: 'Light, uplifting feelings of optimism', emoji: '✨' },
+    { color: '#BAFFC9', name: 'Peace', description: 'Serene and content feelings', emoji: '🕊️' },
+    { color: '#BAE1FF', name: 'Tranquil', description: 'Deep sense of calm and relaxation', emoji: '🌊' }
   ]
 
   const startGame = () => {
@@ -58,124 +59,371 @@ const GameZone = () => {
   }
 
   const renderGameSelection = () => (
-    <div className="text-center">
-      <h2 className="text-2xl font-semibold mb-6">Choose Your Game</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-        <button
+    <motion.div 
+      className="text-center"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      <motion.h2 
+        className="text-4xl lg:text-5xl font-bold mb-12 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+      >
+        Choose Your Journey
+      </motion.h2>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <motion.button
           onClick={() => setSelectedGame('mood')}
-          className="p-6 rounded-lg bg-gradient-to-r from-primary to-purple-600 text-white transition-transform hover:scale-105"
+          className="group relative overflow-hidden"
+          whileHover={{ scale: 1.02, y: -8 }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h3 className="text-xl font-bold mb-2">Mood Matcher</h3>
-          <p className="text-sm opacity-90">
-            Match colors with emotions to improve emotional awareness
-          </p>
-        </button>
-        <button
+          <div className="game-card-premium dark:game-card-premium-dark p-12 text-center h-full">
+            <motion.div 
+              className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent flex items-center justify-center shadow-2xl group-hover:shadow-glow dark:group-hover:shadow-glow-dark transition-all duration-500"
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-4xl">💚</span>
+            </motion.div>
+            
+            <h3 className="text-3xl font-bold mb-4 text-light-text dark:text-dark-text">
+              Mood Matcher
+            </h3>
+            
+            <p className="text-lg text-light-muted dark:text-dark-muted leading-relaxed mb-8">
+              Connect with your emotions through gentle color matching and peaceful interactions
+            </p>
+            
+            <div className="flex items-center justify-center space-x-2 text-light-primary dark:text-dark-primary">
+              <span className="font-semibold">Start Journey</span>
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                →
+              </motion.span>
+            </div>
+            
+            {/* Floating particles effect */}
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <motion.div 
+                className="absolute top-4 right-4 w-2 h-2 rounded-full bg-light-primary/30 dark:bg-dark-primary/30"
+                animate={{ 
+                  y: [0, -20, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity, delay: 0 }}
+              />
+              <motion.div 
+                className="absolute bottom-8 left-6 w-1 h-1 rounded-full bg-light-accent/40 dark:bg-dark-accent/40"
+                animate={{ 
+                  y: [0, -15, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
+              />
+              <motion.div 
+                className="absolute top-1/2 right-8 w-1.5 h-1.5 rounded-full bg-light-secondary/30 dark:bg-dark-secondary/30"
+                animate={{ 
+                  y: [0, -25, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+              />
+            </div>
+          </div>
+        </motion.button>
+        
+        <motion.button
           onClick={() => setSelectedGame('memory')}
-          className="p-6 rounded-lg bg-gradient-to-r from-secondary to-green-500 text-white transition-transform hover:scale-105"
+          className="group relative overflow-hidden"
+          whileHover={{ scale: 1.02, y: -8 }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
         >
-          <h3 className="text-xl font-bold mb-2">Emotion Memory</h3>
-          <p className="text-sm opacity-90">
-            Train your memory while learning about emotions
-          </p>
-        </button>
+          <div className="game-card-premium dark:game-card-premium-dark p-12 text-center h-full">
+            <motion.div 
+              className="w-24 h-24 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-light-accent to-light-primary dark:from-dark-accent dark:to-dark-primary flex items-center justify-center shadow-2xl group-hover:shadow-glow dark:group-hover:shadow-glow-dark transition-all duration-500"
+              whileHover={{ rotate: -5, scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-4xl">🧠</span>
+            </motion.div>
+            
+            <h3 className="text-3xl font-bold mb-4 text-light-text dark:text-dark-text">
+              Emotion Memory
+            </h3>
+            
+            <p className="text-lg text-light-muted dark:text-dark-muted leading-relaxed mb-8">
+              Strengthen your mind while exploring emotional wellness through gentle memory exercises
+            </p>
+            
+            <div className="flex items-center justify-center space-x-2 text-light-primary dark:text-dark-primary">
+              <span className="font-semibold">Begin Training</span>
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
+              >
+                →
+              </motion.span>
+            </div>
+            
+            {/* Floating particles effect */}
+            <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+              <motion.div 
+                className="absolute top-6 left-4 w-2 h-2 rounded-full bg-light-accent/30 dark:bg-dark-accent/30"
+                animate={{ 
+                  y: [0, -18, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 2.8, repeat: Infinity, delay: 0.5 }}
+              />
+              <motion.div 
+                className="absolute bottom-6 right-4 w-1 h-1 rounded-full bg-light-primary/40 dark:bg-dark-primary/40"
+                animate={{ 
+                  y: [0, -22, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3.2, repeat: Infinity, delay: 1.5 }}
+              />
+              <motion.div 
+                className="absolute top-1/3 left-8 w-1.5 h-1.5 rounded-full bg-light-secondary/30 dark:bg-dark-secondary/30"
+                animate={{ 
+                  y: [0, -20, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{ duration: 3.5, repeat: Infinity, delay: 2.5 }}
+              />
+            </div>
+          </div>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   )
 
   const renderMoodGame = () => (
-    <div className="game-container">
+    <motion.div 
+      className="game-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
       {!gameStarted ? (
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold mb-4">Welcome to Mood Matcher!</h2>
-          <p className="mb-6 text-gray-600">
-            Match the colors with their corresponding emotions. This game helps understand
-            your emotional awareness and response patterns.
-          </p>
-          <div className="space-x-4">
-            <button
+        <motion.div 
+          className="text-center px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2 
+            className="text-4xl lg:text-5xl font-bold mb-8 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Welcome to Mood Matcher
+          </motion.h2>
+          
+          <motion.p 
+            className="mb-12 text-light-muted dark:text-dark-muted text-lg lg:text-xl leading-relaxed max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            Connect with your emotions through gentle color matching. This peaceful activity helps you understand your emotional awareness and response patterns in a calming environment.
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <motion.button
               onClick={startGame}
-              className="btn-primary text-lg px-8 py-3"
+              className="btn-primary-premium text-lg px-10 py-4 font-semibold"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Start Game
-            </button>
-            <button
+              Begin Journey ✨
+            </motion.button>
+            
+            <motion.button
               onClick={() => setSelectedGame(null)}
-              className="btn-secondary text-lg px-8 py-3"
+              className="btn-secondary-premium text-lg px-10 py-4 font-semibold"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Back to Games
-            </button>
-          </div>
-        </div>
+              ← Back to Games
+            </motion.button>
+          </motion.div>
+        </motion.div>
       ) : (
-        <div className="text-center">
-          <div className="flex justify-between items-center mb-6">
-            <button
+        <motion.div 
+          className="text-center px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-6">
+            <motion.button
               onClick={() => {
                 setGameStarted(false)
                 setSelectedGame(null)
               }}
-              className="btn-secondary"
+              className="btn-secondary-premium text-base px-6 py-3 order-2 sm:order-1"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Exit Game
-            </button>
-            <p className="text-xl">Score: {score}</p>
+              ← Exit
+            </motion.button>
+            
+            <motion.div 
+              className="order-1 sm:order-2"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+            >
+              <div className="card-premium dark:card-premium-dark px-8 py-4">
+                <p className="text-2xl font-bold text-light-text dark:text-dark-text">
+                  Score: <span className="text-light-primary dark:text-dark-primary">{score}</span>
+                </p>
+              </div>
+            </motion.div>
           </div>
           
           {/* Current Emotion Display */}
-          {currentEmotion && (
-            <div className="mb-8">
-              <div 
-                className="w-32 h-32 mx-auto rounded-full mb-4 transition-all duration-300 transform hover:scale-105"
-                style={{ backgroundColor: currentEmotion.color }}
-              />
-              <p className="text-lg text-gray-600">Match this color with the correct emotion</p>
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {currentEmotion && (
+              <motion.div 
+                className="mb-12"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.6, type: "spring" }}
+              >
+                <motion.div 
+                  className="w-40 h-40 lg:w-48 lg:h-48 mx-auto rounded-full mb-8 shadow-2xl flex items-center justify-center relative overflow-hidden"
+                  style={{ backgroundColor: currentEmotion.color }}
+                  whileHover={{ scale: 1.05 }}
+                  animate={{ 
+                    boxShadow: [
+                      "0 20px 40px rgba(0,0,0,0.1)",
+                      "0 30px 60px rgba(0,0,0,0.15)",
+                      "0 20px 40px rgba(0,0,0,0.1)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  <span className="text-6xl lg:text-7xl">{currentEmotion.emoji}</span>
+                  
+                  {/* Glowing ring */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent animate-gentle-pulse" />
+                </motion.div>
+                
+                <p className="text-xl lg:text-2xl text-light-text dark:text-dark-text font-medium">
+                  Match this feeling with the correct emotion
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Feedback Message */}
-          {showFeedback && (
-            <div className="mb-6 text-lg font-semibold animate-fade-in" 
-                 style={{ color: feedbackMessage.includes('Great') ? '#4ECDC4' : '#FF6B6B' }}>
-              {feedbackMessage}
-            </div>
-          )}
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div 
+                className="mb-8 text-2xl lg:text-3xl font-bold"
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: -20 }}
+                transition={{ duration: 0.5, type: "spring" }}
+                style={{ 
+                  color: feedbackMessage.includes('Great') ? '#4ECDC4' : '#FFB3BA' 
+                }}
+              >
+                {feedbackMessage}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Emotion Buttons */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            {emotions.map((emotion) => (
-              <button
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            {emotions.map((emotion, index) => (
+              <motion.button
                 key={emotion.name}
                 onClick={() => handleEmotionSelect(emotion)}
-                className="p-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                className="relative p-8 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl active:scale-95 shadow-lg overflow-hidden"
                 style={{ 
                   backgroundColor: emotion.color,
                   color: 'white',
-                  textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
                 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+                whileHover={{ y: -8 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span className="block text-lg font-semibold">{emotion.name}</span>
-                <span className="text-sm opacity-90">{emotion.description}</span>
-              </button>
+                <div className="text-center relative z-10">
+                  <div className="text-4xl lg:text-5xl mb-4">{emotion.emoji}</div>
+                  <span className="block text-xl lg:text-2xl font-bold mb-3">{emotion.name}</span>
+                  <span className="text-base lg:text-lg opacity-90 leading-tight">{emotion.description}</span>
+                </div>
+                
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              </motion.button>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   )
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Play games, have fun, feel better
-      </h1>
+    <motion.div 
+      className="max-w-7xl mx-auto px-6 lg:px-8 py-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      <motion.h1 
+        className="text-4xl lg:text-6xl font-bold text-center mb-12 bg-gradient-to-r from-light-text to-light-primary dark:from-dark-text dark:to-dark-primary bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+      >
+        Find Your Inner Peace
+      </motion.h1>
       
-      <div className="bg-white rounded-lg shadow-lg p-6 animate-fade-in">
-        {!selectedGame && renderGameSelection()}
-        {selectedGame === 'mood' && renderMoodGame()}
-        {selectedGame === 'memory' && <MemoryGame />}
-      </div>
-    </div>
+      <motion.div 
+        className="card-premium dark:card-premium-dark p-8 lg:p-12"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        whileHover={{ scale: 1.01, y: -5 }}
+      >
+        <AnimatePresence mode="wait">
+          {!selectedGame && renderGameSelection()}
+          {selectedGame === 'mood' && renderMoodGame()}
+          {selectedGame === 'memory' && <MemoryGame />}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   )
 }
 

@@ -9,13 +9,15 @@ A mental wellness tracking app disguised as fun games, featuring an AI voice com
 - Judge dashboard for monitoring user wellbeing
 - Crisis detection and alert system
 
-## Tech Stack
+
+## Tech Stack 
 
 ### Frontend
 - React with Vite
 - TailwindCSS for styling
 - Chart.js for visualizations
 - React Router for navigation
+
 
 ### Backend
 - FastAPI (Python)

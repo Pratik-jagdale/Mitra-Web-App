@@ -1,172 +1,221 @@
-/* Tailwind layers */
+/* ===============================
+   Tailwind Base Layers
+================================ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* ===============================
+   Base Styles
+================================ */
+@layer base {
+  * {
+    @apply border-light-muted/20 dark:border-dark-muted/20;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-500;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-light-text dark:text-dark-text transition-colors duration-300;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-light-bg/50 dark:bg-dark-bg/50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-light-primary/30 dark:bg-dark-primary/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-light-primary/50 dark:bg-dark-primary/50;
+  }
 }
 
-@keyframes slideIn {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* ===============================
+   Keyframe Animations
+================================ */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
 }
 
-@keyframes pulseCustom {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
 }
 
-@keyframes bounceCustom {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@keyframes background-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-/* Animations as utilities */
+@keyframes particle-fade {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  100% { opacity: 0; transform: scale(0.3) translateY(-20px); }
+}
+
+@keyframes premium-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(90, 200, 250, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(90, 200, 250, 0.5); }
+}
+
+@keyframes premium-glow-dark {
+  0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6); }
+}
+
+/* ===============================
+   Utility Animations
+================================ */
 @layer utilities {
-  .fade-in { animation: fadeIn 0.5s ease-in-out; }
-  .slide-in { animation: slideIn 0.5s ease-out; }
-  .pulse-custom { animation: pulseCustom 2s infinite; }
-  .bounce-custom { animation: bounceCustom 1s infinite; }
+  .animate-gentle-float { animation: gentle-float 6s ease-in-out infinite; }
+  .animate-gentle-pulse { animation: gentle-pulse 4s ease-in-out infinite; }
+  .animate-background-shift { animation: background-shift 20s ease-in-out infinite; }
+  .animate-particle-fade { animation: particle-fade 1.2s ease-out forwards; }
+  .animate-premium-glow { animation: premium-glow 3s ease-in-out infinite; }
+  .animate-premium-glow-dark { animation: premium-glow-dark 3s ease-in-out infinite; }
 }
 
-/* Components */
+/* ===============================
+   Components
+================================ */
 @layer components {
-  /* Buttons */
-  .btn-primary {
-    @apply bg-teal-400 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-teal-500;
+  /* ----- Buttons ----- */
+  .btn-premium {
+    @apply relative px-8 py-4 font-semibold rounded-2xl transition-all duration-300 shadow-lg 
+           hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-light-primary/20 
+           dark:focus:ring-dark-primary/20;
+    background: linear-gradient(135deg, rgba(90, 200, 250, 0.1), rgba(255, 183, 3, 0.1));
+    backdrop-filter: blur(10px);
   }
 
-  .btn-secondary {
-    @apply bg-yellow-400 text-gray-800 font-medium px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50;
-  }
-  
-  /* Voice Companion */
-  .text-primary-100 { @apply text-teal-100; }
-  .text-primary-300 { @apply text-teal-300; }
-  .text-primary-400 { @apply text-teal-400; }
-  .text-primary-600 { @apply text-teal-600; }
-  .text-primary-800 { @apply text-teal-800; }
-  
-  .bg-primary-100 { @apply bg-teal-100; }
-  .bg-primary-200 { @apply bg-teal-200; }
-  .bg-primary-500 { @apply bg-teal-500; }
-  .bg-primary-600 { @apply bg-teal-600; }
-  .bg-primary-700 { @apply bg-teal-700; }
-  .bg-primary-800 { @apply bg-teal-800; }
-  
-  .text-secondary-300 { @apply text-yellow-300; }
-  .text-secondary-600 { @apply text-yellow-600; }
-  
-  .bg-secondary-100 { @apply bg-yellow-100; }
-  .bg-secondary-200 { @apply bg-yellow-200; }
-  .bg-secondary-700 { @apply bg-yellow-700; }
-  .bg-secondary-800 { @apply bg-yellow-800; }
-  
-  .ring-red-300 { @apply ring-red-300; }
-  .ring-red-700 { @apply ring-red-700; }
-
-  /* Card */
-  .card {
-    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300;
+  .btn-premium:hover {
+    @apply transform scale-105;
+    background: linear-gradient(135deg, rgba(90, 200, 250, 0.2), rgba(255, 183, 3, 0.2));
   }
 
-  /* Input */
-  .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-300;
+  .btn-premium:active {
+    @apply transform scale-95;
   }
 
-  /* Game Zone */
-  .game-card {
-    @apply bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+  .btn-primary-premium {
+    @apply btn-premium text-white;
+    background: linear-gradient(135deg, #5AC8FA, #FFB703);
+    box-shadow: 0 8px 32px rgba(90, 200, 250, 0.3);
   }
 
-  .game-button {
-    @apply bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold py-3 px-6 rounded-lg hover:from-teal-500 hover:to-teal-400 transition-all duration-300 transform hover:scale-105;
+  .btn-primary-premium:hover {
+    background: linear-gradient(135deg, #4AB8EA, #FFA700);
+    box-shadow: 0 12px 40px rgba(90, 200, 250, 0.4);
   }
 
-  /* Journal */
-  .mood-button {
-    @apply rounded-full p-4 transition-all duration-300 hover:shadow-lg transform hover:scale-110;
+  /* ----- Glass Cards ----- */
+  .card-premium {
+    @apply relative rounded-3xl shadow-xl transition-all duration-500 transform hover:-translate-y-1 p-6;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
 
-  .journal-entry {
-    @apply bg-white rounded-lg shadow p-4 mb-4 hover:shadow-md transition-all duration-300;
+  .card-premium:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  /* Analytics */
-  .chart-container {
-    @apply bg-white rounded-lg shadow-md p-6 mb-6 hover:shadow-lg transition-all duration-300;
+  /* ----- Game Cards ----- */
+  .game-card-premium {
+    @apply relative rounded-3xl shadow-2xl transition-all duration-500 transform 
+           hover:-translate-y-2 hover:scale-105 p-6;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .insight-card {
-    @apply bg-opacity-50 rounded-lg p-4 transform transition-all duration-300 hover:scale-105;
+  .game-card-premium:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
-  /* Chat Interface */
-  .message-bubble {
-    @apply p-4 rounded-lg max-w-[80%] mb-4 transform transition-all duration-300;
+  /* ----- Inputs ----- */
+  .input-premium {
+    @apply w-full px-6 py-4 rounded-2xl transition-all duration-300 
+           focus:outline-none focus:ring-4 focus:ring-light-primary/20 dark:focus:ring-dark-primary/20;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: inherit;
   }
 
-  .user-message {
-    @apply bg-teal-400 text-white ml-auto slide-in;
+  .input-premium:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(90, 200, 250, 0.5);
+    box-shadow: 0 0 20px rgba(90, 200, 250, 0.2);
   }
 
-  .ai-message {
-    @apply bg-gray-100 mr-auto slide-in;
+  /* ----- Navigation Links ----- */
+  .nav-link-premium {
+    @apply relative px-6 py-3 font-medium transition-all duration-300 rounded-2xl;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
   }
 
-  .recording-button {
-    @apply relative overflow-hidden transition-all duration-300;
+  .nav-link-premium:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
   }
 
-  .recording-button::before {
-    content: '';
-    @apply absolute inset-0 bg-red-500 transform scale-0 opacity-0 transition-all duration-300;
-  }
-
-  .recording-button.active::before {
-    @apply transform scale-100 opacity-100;
-  }
-
-  /* Tabs */
-  .tab-button {
-    @apply px-4 py-2 font-medium transition-all duration-300 hover:text-teal-400;
-  }
-
-  .tab-button.active {
-    @apply border-b-2 border-teal-400 text-teal-400;
-  }
-
-  /* Loading */
-  .loading-spinner {
-    @apply animate-spin h-5 w-5 text-teal-400;
-  }
-
-  .loading-pulse {
-    @apply animate-pulse bg-gray-200 rounded;
+  .nav-link-premium.active {
+    background: rgba(90, 200, 250, 0.2);
+    border: 1px solid rgba(90, 200, 250, 0.3);
   }
 }
 
-/* Responsive tweaks */
+/* ===============================
+   Responsive Design
+================================ */
 @media (max-width: 640px) {
-  .card { @apply p-4; }
-  .game-button { @apply py-2 px-4 text-sm; }
-  .chart-container { @apply p-4; }
+  .btn-premium {
+    @apply px-6 py-3 text-sm;
+  }
+
+  .card-premium,
+  .game-card-premium {
+    @apply w-full;
+  }
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  body { @apply bg-gray-900 text-gray-100; }
+/* ===============================
+   Accessibility
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
-  .card,
-  .journal-entry,
-  .chart-container { @apply bg-gray-800 text-white; }
-
-  .input-field { @apply bg-gray-700 border-gray-600 text-white; }
-
-  .ai-message { @apply bg-gray-700 text-white; }
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  @apply outline-none ring-4 ring-light-primary/50 dark:ring-dark-primary/50 ring-offset-2;
 }
